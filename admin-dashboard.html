@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard | MediNex</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f8f9;
+            color: #304d58;
+        }
+
+        .admin-page {
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+
+        .admin-header {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e1eaec;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-brand-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            background: #087f8c;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .admin-brand h2 {
+            margin: 0;
+            color: #173b4a;
+            font-size: 19px;
+        }
+
+        .admin-brand span {
+            display: block;
+            color: #7b8b91;
+            font-size: 9px;
+            margin-top: 2px;
+        }
+
+        .logout-btn {
+            border: none;
+            background: #fff0f0;
+            color: #a52e2e;
+            padding: 8px 13px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+
+        /* CONTENT */
+
+        .admin-content {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 5%;
+        }
+
+        .admin-title {
+            margin-bottom: 25px;
+        }
+
+        .admin-title h1 {
+            margin: 0 0 6px;
+            color: #173b4a;
+            font-size: 28px;
+        }
+
+        .admin-title p {
+            margin: 0;
+            color: #718189;
+            font-size: 12px;
+        }
+
+
+        /* STAT CARDS */
+
+        .stats {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e1eaec;
+            border-radius: 13px;
+            padding: 18px;
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            background: #eef8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #087f8c;
+            margin-bottom: 12px;
+        }
+
+        .stat-card h2 {
+            margin: 0 0 5px;
+            color: #173b4a;
+            font-size: 23px;
+        }
+
+        .stat-card p {
+            margin: 0;
+            color: #7b8b91;
+            font-size: 10px;
+        }
+
+
+        /* GRID */
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 20px;
+        }
+
+        .admin-card {
+            background: white;
+            border: 1px solid #e1eaec;
+            border-radius: 15px;
+            padding: 22px;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .card-title h2 {
+            margin: 0;
+            color: #173b4a;
+            font-size: 16px;
+        }
+
+        .card-title span {
+            color: #087f8c;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+
+        /* SEARCH */
+
+        .search {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #d7e3e5;
+            border-radius: 7px;
+            outline: none;
+            font-size: 11px;
+            margin-bottom: 15px;
+        }
+
+        .search:focus {
+            border-color: #087f8c;
+        }
+
+
+        /* TABLE */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+
+        th {
+            background: #f6fafb;
+            color: #667a82;
+            text-align: left;
+            font-size: 10px;
+            padding: 11px;
+        }
+
+        td {
+            border-top: 1px solid #edf1f2;
+            padding: 12px 11px;
+            font-size: 10px;
+            color: #536a72;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 8px;
+            border-radius: 20px;
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        .status.active {
+            background: #eaf8f0;
+            color: #18794e;
+        }
+
+        .status.pending {
+            background: #fff7e8;
+            color: #9a6500;
+        }
+
+
+        /* ACTIVITY */
+
+        .activity-item {
+            display: flex;
+            gap: 11px;
+            padding: 13px 0;
+            border-bottom: 1px solid #edf1f2;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 35px;
+            height: 35px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            background: #eef8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .activity-item strong {
+            display: block;
+            color: #304d58;
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+
+        .activity-item small {
+            color: #859197;
+            font-size: 9px;
+        }
+
+
+        /* QUICK ACTIONS */
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .quick-btn {
+            border: 1px solid #e0e9eb;
+            background: #fafcfc;
+            padding: 13px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #304d58;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .quick-btn:hover {
+            border-color: #087f8c;
+            color: #087f8c;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .admin-header {
+                padding: 0 4%;
+            }
+
+            .admin-content {
+                padding: 25px 4%;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 9px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .admin-title h1 {
+                font-size: 23px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="admin-page">
+
+
+    <!-- HEADER -->
+
+    <header class="admin-header">
+
+        <div class="admin-brand">
+
+            <div class="admin-brand-icon">
+                M
+            </div>
+
+            <div>
+
+                <h2>MediNex</h2>
+
+                <span>
+                    Administration Portal
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="logout-btn"
+            onclick="adminLogout()"
+        >
+            Logout
+        </button>
+
+    </header>
+
+
+
+    <!-- CONTENT -->
+
+    <main class="admin-content">
+
+
+        <div class="admin-title">
+
+            <h1>
+                Admin Dashboard
+            </h1>
+
+            <p>
+                Manage and monitor the MediNex healthcare
+                platform.
+            </p>
+
+        </div>
+
+
+
+        <!-- STATS -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👥
+                </div>
+
+                <h2 id="patientCount">
+                    0
+                </h2>
+
+                <p>
+                    Registered Patients
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👨‍⚕️
+                </div>
+
+                <h2 id="doctorCount">
+                    0
+                </h2>
+
+                <p>
+                    Doctors
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📋
+                </div>
+
+                <h2 id="caseCount">
+                    0
+                </h2>
+
+                <p>
+                    Patient Cases
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    📄
+                </div>
+
+                <h2 id="documentCount">
+                    0
+                </h2>
+
+                <p>
+                    Medical Documents
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- GRID -->
+
+        <section class="admin-grid">
+
+
+            <!-- PATIENT CASES -->
+
+            <div class="admin-card">
+
+                <div class="card-title">
+
+                    <h2>
+                        Patient Cases
+                    </h2>
+
+                    <span>
+                        LIVE DATA
+                    </span>
+
+                </div>
+
+
+                <input
+                    type="search"
+                    class="search"
+                    id="searchPatient"
+                    placeholder="Search patient..."
+                >
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Patient
+                                </th>
+
+                                <th>
+                                    Symptoms
+                                </th>
+
+                                <th>
+                                    Severity
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="patientTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RIGHT SIDE -->
+
+            <div>
+
+
+                <!-- ACTIVITY -->
+
+                <div class="admin-card">
+
+                    <div class="card-title">
+
+                        <h2>
+                            Recent Activity
+                        </h2>
+
+                    </div>
+
+
+                    <div
+                        id="activityList"
+                    ></div>
+
+                </div>
+
+
+                <br>
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="admin-card">
+
+                    <div class="card-title">
+
+                        <h2>
+                            Quick Actions
+                        </h2>
+
+                    </div>
+
+
+                    <div class="quick-actions">
+
+                        <button
+                            class="quick-btn"
+                            onclick="viewPatients()"
+                        >
+                            👥 Patients
+                        </button>
+
+                        <button
+                            class="quick-btn"
+                            onclick="viewDoctors()"
+                        >
+                            👨‍⚕️ Doctors
+                        </button>
+
+                        <button
+                            class="quick-btn"
+                            onclick="viewDocuments()"
+                        >
+                            📄 Documents
+                        </button>
+
+                        <button
+                            class="quick-btn"
+                            onclick="viewCases()"
+                        >
+                            📋 Cases
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<script>
+
+
+    /* ================= ADMIN AUTH ================= */
+
+    const isAdminLoggedIn =
+        localStorage.getItem(
+            "medinexAdminLoggedIn"
+        );
+
+
+    if (isAdminLoggedIn !== "true") {
+
+        window.location.href =
+            "admin-login.html";
+
+    }
+
+
+
+    /* ================= DATA ================= */
+
+    function getCaseData() {
+
+        const data =
+            JSON.parse(
+                localStorage.getItem(
+                    "medinexCaseData"
+                )
+            );
+
+        return data ? [data] : [];
+
+    }
+
+
+    function getDocuments() {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "medinexDocuments"
+            )
+        ) || [];
+
+    }
+
+
+
+    /* ================= STATS ================= */
+
+    function updateStats() {
+
+        const cases =
+            getCaseData();
+
+        const documents =
+            getDocuments();
+
+
+        document.getElementById(
+            "patientCount"
+        ).textContent =
+            cases.length;
+
+
+        document.getElementById(
+            "caseCount"
+        ).textContent =
+            cases.length;
+
+
+        document.getElementById(
+            "documentCount"
+        ).textContent =
+            documents.length;
+
+
+        /*
+         * Demo doctor count.
+         *
+         * Real backend mein database
+         * se count aayega.
+         */
+
+        document.getElementById(
+            "doctorCount"
+        ).textContent = "1";
+
+    }
+
+
+
+    /* ================= PATIENT TABLE ================= */
+
+    function displayPatients(
+        search = ""
+    ) {
+
+        const table =
+            document.getElementById(
+                "patientTable"
+            );
+
+
+        const patients =
+            getCaseData();
+
+
+        const filtered =
+            patients.filter(
+                patient =>
+                    patient.patientName
+                        .toLowerCase()
+                        .includes(
+                            search.toLowerCase()
+                        )
+            );
+
+
+        table.innerHTML = "";
+
+
+        if (filtered.length === 0) {
+
+            table.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="4"
+                        style="
+                            text-align:center;
+                            padding:30px;
+                            color:#849197;
+                        "
+                    >
+                        No patient cases found.
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        filtered.forEach(
+            function(patient) {
+
+                let status =
+                    patient.severity ===
+                    "Severe"
+                        ? "Pending"
+                        : "Active";
+
+
+                table.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                ${patient.patientName}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${
+                                patient.symptoms ||
+                                "Not provided"
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                patient.severity ||
+                                "—"
+                            }
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="status
+                                ${
+                                    status === "Active"
+                                        ? "active"
+                                        : "pending"
+                                }"
+                            >
+                                ${status}
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+
+    /* ================= ACTIVITY ================= */
+
+    function displayActivity() {
+
+        const activity =
+            document.getElementById(
+                "activityList"
+            );
+
+
+        const cases =
+            getCaseData();
+
+
+        const documents =
+            getDocuments();
+
+
+        activity.innerHTML = "";
+
+
+        if (cases.length === 0 &&
+            documents.length === 0) {
+
+            activity.innerHTML = `
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+                        ℹ️
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            No recent activity
+                        </strong>
+
+                        <small>
+                            Activity will appear here.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        cases.forEach(
+            function(patient) {
+
+                activity.innerHTML += `
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon">
+                            🩺
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                New patient case:
+                                ${patient.patientName}
+                            </strong>
+
+                            <small>
+                                Patient case submitted
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        documents.slice(-3).forEach(
+            function(document) {
+
+                activity.innerHTML += `
+
+                    <div class="activity-item">
+
+                        <div class="activity-icon">
+                            📄
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Document uploaded
+                            </strong>
+
+                            <small>
+                                ${document.name}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+
+    /* ================= SEARCH ================= */
+
+    document
+        .getElementById("searchPatient")
+        .addEventListener(
+            "input",
+            function() {
+
+                displayPatients(
+                    this.value
+                );
+
+            }
+        );
+
+
+
+    /* ================= QUICK ACTIONS ================= */
+
+    function viewPatients() {
+
+        alert(
+            "Patient management module will open here."
+        );
+
+    }
+
+
+    function viewDoctors() {
+
+        alert(
+            "Doctor management module will open here."
+        );
+
+    }
+
+
+    function viewDocuments() {
+
+        window.location.href =
+            "upload.html";
+
+    }
+
+
+    function viewCases() {
+
+        window.location.href =
+            "doctor-dashboard.html";
+
+    }
+
+
+
+    /* ================= LOGOUT ================= */
+
+    function adminLogout() {
+
+        localStorage.removeItem(
+            "medinexAdminLoggedIn"
+        );
+
+
+        window.location.href =
+            "admin-login.html";
+
+    }
+
+
+
+    /* ================= INITIAL ================= */
+
+    updateStats();
+
+    displayPatients();
+
+    displayActivity();
+
+</script>
+
+</body>
+
+</html>
