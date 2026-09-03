@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Case Taking | MediNex</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* ================= PAGE ================= */
+
+        .intake-page {
+            min-height: calc(100vh - 76px);
+            background: #f5f9fa;
+            padding: 35px 5%;
+        }
+
+        .intake-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .intake-header {
+            margin-bottom: 25px;
+        }
+
+        .intake-header h1 {
+            color: #173b4a;
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        .intake-header p {
+            color: #718189;
+            font-size: 14px;
+        }
+
+
+        /* ================= PROGRESS ================= */
+
+        .progress-box {
+            background: white;
+            border: 1px solid #e1eaec;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-top strong {
+            color: #173b4a;
+            font-size: 13px;
+        }
+
+        .progress-top span {
+            color: #087f8c;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e7eff1;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 20%;
+            height: 100%;
+            background: #087f8c;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+
+        /* ================= FORM CARD ================= */
+
+        .intake-card {
+            background: white;
+            border: 1px solid #e1eaec;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .step-title {
+            margin-bottom: 25px;
+        }
+
+        .step-title h2 {
+            color: #173b4a;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .step-title p {
+            color: #718189;
+            font-size: 13px;
+        }
+
+
+        /* ================= FORM ================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            color: #304d58;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .required {
+            color: #c83c3c;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid #d4e2e5;
+            border-radius: 9px;
+            padding: 13px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            color: #173b4a;
+            background: white;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #087f8c;
+            box-shadow: 0 0 0 3px rgba(8,127,140,0.08);
+        }
+
+
+        /* ================= CHECKBOXES ================= */
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            border: 1px solid #e1eaec;
+            padding: 12px;
+            border-radius: 9px;
+            cursor: pointer;
+        }
+
+        .check-item:hover {
+            background: #f5fbfb;
+        }
+
+        .check-item input {
+            width: auto;
+            accent-color: #087f8c;
+        }
+
+        .check-item span {
+            font-size: 13px;
+            color: #536a72;
+        }
+
+
+        /* ================= RADIO ================= */
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            color: #536a72;
+        }
+
+        .radio-item input {
+            width: auto;
+            accent-color: #087f8c;
+        }
+
+
+        /* ================= INFO ================= */
+
+        .info-box {
+            padding: 14px;
+            background: #eef9f9;
+            border: 1px solid #d7eeee;
+            border-radius: 9px;
+            color: #087f8c;
+            font-size: 12px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .warning-box {
+            padding: 14px;
+            background: #fff8e8;
+            border: 1px solid #f2dfb2;
+            border-radius: 9px;
+            color: #8b6508;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            gap: 12px;
+        }
+
+        .form-btn {
+            padding: 12px 22px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .prev-btn {
+            background: #eef3f4;
+            color: #536a72;
+        }
+
+        .next-btn,
+        .submit-btn {
+            background: #087f8c;
+            color: white;
+        }
+
+        .next-btn:hover,
+        .submit-btn:hover {
+            background: #066b76;
+        }
+
+
+        /* ================= REVIEW ================= */
+
+        .review-section {
+            background: #f7fafb;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .review-section h3 {
+            font-size: 14px;
+            color: #173b4a;
+            margin-bottom: 8px;
+        }
+
+        .review-section p {
+            color: #718189;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+
+        /* ================= SUCCESS ================= */
+
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .success-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #eaf8f0;
+            color: #18794e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 20px;
+        }
+
+        .success-screen h2 {
+            color: #173b4a;
+            margin-bottom: 8px;
+        }
+
+        .success-screen p {
+            color: #718189;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 700px) {
+
+            .intake-page {
+                padding: 25px 4%;
+            }
+
+            .intake-card {
+                padding: 22px 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .intake-header h1 {
+                font-size: 25px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <a href="index.html" class="logo">
+
+            <div class="logo-icon">
+                M
+            </div>
+
+            <div class="logo-text">
+                Medi<span>N</span>ex
+            </div>
+
+        </a>
+
+
+        <nav class="navbar">
+
+            <a href="patient-dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="timeline.html">
+                Medical Timeline
+            </a>
+
+            <a href="upload.html">
+                Documents
+            </a>
+
+        </nav>
+
+
+        <button class="menu-btn" id="menuBtn">
+            ☰
+        </button>
+
+    </header>
+
+
+
+    <!-- ================= PAGE ================= -->
+
+    <main class="intake-page">
+
+        <div class="intake-container">
+
+
+            <!-- HEADER -->
+
+            <div class="intake-header">
+
+                <h1>
+                    Patient Case-Taking
+                </h1>
+
+                <p>
+                    Please provide accurate information to help
+                    the healthcare professional understand your case.
+                </p>
+
+            </div>
+
+
+
+            <!-- PROGRESS -->
+
+            <div class="progress-box">
+
+                <div class="progress-top">
+
+                    <strong id="stepName">
+                        Basic Information
+                    </strong>
+
+                    <span id="stepNumber">
+                        Step 1 of 5
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FORM CARD -->
+
+            <div class="intake-card">
+
+
+                <form id="intakeForm">
+
+
+                    <!-- ================= STEP 1 ================= -->
+
+                    <div class="step active">
+
+                        <div class="step-title">
+
+                            <h2>
+                                Basic Information
+                            </h2>
+
+                            <p>
+                                Tell us a little about yourself.
+                            </p>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            🔐 Your information should only be used
+                            for healthcare and consultation purposes.
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Full Name <span class="required">*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="fullName"
+                                    placeholder="Enter your full name"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Date of Birth
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="dob"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Gender
+                                </label>
+
+                                <select id="gender">
+
+                                    <option value="">
+                                        Select gender
+                                    </option>
+
+                                    <option>
+                                        Male
+                                    </option>
+
+                                    <option>
+                                        Female
+                                    </option>
+
+                                    <option>
+                                        Other
+                                    </option>
+
+                                    <option>
+                                        Prefer not to say
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Contact Number
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    placeholder="Enter mobile number"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Address
+                                </label>
+
+                                <textarea
+                                    id="address"
+                                    placeholder="Enter your address"
+                                ></textarea>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= STEP 2 ================= -->
+
+                    <div class="step">
+
+                        <div class="step-title">
+
+                            <h2>
+                                Current Symptoms
+                            </h2>
+
+                            <p>
+                                Describe what you are experiencing.
+                            </p>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Main Complaint / Symptoms
+                                    <span class="required">*</span>
+                                </label>
+
+                                <textarea
+                                    id="symptoms"
+                                    placeholder="Example: headache, fever, cough, fatigue..."
+                                    required
+                                ></textarea>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    When did the symptoms start?
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="duration"
+                                    placeholder="Example: 3 days ago"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Severity
+                                </label>
+
+                                <select id="severity">
+
+                                    <option value="">
+                                        Select severity
+                                    </option>
+
+                                    <option>
+                                        Mild
+                                    </option>
+
+                                    <option>
+                                        Moderate
+                                    </option>
+
+                                    <option>
+                                        Severe
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Associated Symptoms
+                                </label>
+
+                                <div class="checkbox-grid">
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            value="Fever"
+                                            name="associatedSymptoms"
+                                        >
+                                        <span>Fever</span>
+                                    </label>
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            value="Headache"
+                                            name="associatedSymptoms"
+                                        >
+                                        <span>Headache</span>
+                                    </label>
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            value="Cough"
+                                            name="associatedSymptoms"
+                                        >
+                                        <span>Cough</span>
+                                    </label>
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            value="Fatigue"
+                                            name="associatedSymptoms"
+                                        >
+                                        <span>Fatigue</span>
+                                    </label>
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            value="Nausea"
+                                            name="associatedSymptoms"
+                                        >
+                                        <span>Nausea</span>
+                                    </label>
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            value="Dizziness"
+                                            name="associatedSymptoms"
+                                        >
+                                        <span>Dizziness</span>
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Anything else you want the doctor to know?
+                                </label>
+
+                                <textarea
+                                    id="additionalSymptoms"
+                                    placeholder="Additional information..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= STEP 3 ================= -->
+
+                    <div class="step">
+
+                        <div class="step-title">
+
+                            <h2>
+                                Medical History
+                            </h2>
+
+                            <p>
+                                Tell us about your previous health conditions.
+                            </p>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Existing Medical Conditions
+                                </label>
+
+                                <div class="checkbox-grid">
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            name="conditions"
+                                            value="Diabetes"
+                                        >
+                                        <span>Diabetes</span>
+                                    </label>
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            name="conditions"
+                                            value="Hypertension"
+                                        >
+                                        <span>Hypertension</span>
+                                    </label>
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            name="conditions"
+                                            value="Asthma"
+                                        >
+                                        <span>Asthma</span>
+                                    </label>
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            name="conditions"
+                                            value="Heart Disease"
+                                        >
+                                        <span>Heart Disease</span>
+                                    </label>
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            name="conditions"
+                                            value="Thyroid"
+                                        >
+                                        <span>Thyroid</span>
+                                    </label>
+
+                                    <label class="check-item">
+                                        <input
+                                            type="checkbox"
+                                            name="conditions"
+                                            value="None"
+                                        >
+                                        <span>None</span>
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Previous Surgeries / Hospitalizations
+                                </label>
+
+                                <textarea
+                                    id="surgeries"
+                                    placeholder="Mention previous surgeries or hospitalizations..."
+                                ></textarea>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Allergies
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="allergies"
+                                    placeholder="Medicine / food / other allergies"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Blood Group
+                                </label>
+
+                                <select id="bloodGroup">
+
+                                    <option value="">
+                                        Select blood group
+                                    </option>
+
+                                    <option>A+</option>
+                                    <option>A-</option>
+                                    <option>B+</option>
+                                    <option>B-</option>
+                                    <option>AB+</option>
+                                    <option>AB-</option>
+                                    <option>O+</option>
+                                    <option>O-</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= STEP 4 ================= -->
+
+                    <div class="step">
+
+                        <div class="step-title">
+
+                            <h2>
+                                Medicines & Family History
+                            </h2>
+
+                            <p>
+                                Provide information about medicines
+                                and relevant family health history.
+                            </p>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Current Medicines
+                                </label>
+
+                                <textarea
+                                    id="medicines"
+                                    placeholder="Medicine name, dose and frequency..."
+                                ></textarea>
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Family History
+                                </label>
+
+                                <textarea
+                                    id="familyHistory"
+                                    placeholder="Mention relevant family medical history..."
+                                ></textarea>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Smoking
+                                </label>
+
+                                <div class="radio-group">
+
+                                    <label class="radio-item">
+
+                                        <input
+                                            type="radio"
+                                            name="smoking"
+                                            value="Yes"
+                                        >
+
+                                        Yes
+
+                                    </label>
+
+                                    <label class="radio-item">
+
+                                        <input
+                                            type="radio"
+                                            name="smoking"
+                                            value="No"
+                                        >
+
+                                        No
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Physical Activity
+                                </label>
+
+                                <select id="activity">
+
+                                    <option value="">
+                                        Select activity level
+                                    </option>
+
+                                    <option>
+                                        Low
+                                    </option>
+
+                                    <option>
+                                        Moderate
+                                    </option>
+
+                                    <option>
+                                        High
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Additional Notes
+                                </label>
+
+                                <textarea
+                                    id="additionalNotes"
+                                    placeholder="Any other information..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= STEP 5 ================= -->
+
+                    <div class="step">
+
+                        <div class="step-title">
+
+                            <h2>
+                                Review & Submit
+                            </h2>
+
+                            <p>
+                                Please review the information before submitting.
+                            </p>
+
+                        </div>
+
+
+                        <div class="warning-box">
+
+                            ⚠️ Please ensure the information provided
+                            is accurate. This information will be
+                            available to the authorized healthcare
+                            professional for consultation.
+
+                        </div>
+
+
+                        <div
+                            id="reviewData"
+                            style="margin-top:20px;"
+                        ></div>
+
+
+                        <div class="form-group"
+                            style="margin-top:20px;">
+
+                            <label class="check-item">
+
+                                <input
+                                    type="checkbox"
+                                    id="consent"
+                                >
+
+                                <span>
+                                    I confirm that the information
+                                    provided is accurate and I consent
+                                    to sharing this case with the
+                                    authorized healthcare professional.
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= BUTTONS ================= -->
+
+                    <div class="form-buttons">
+
+                        <button
+                            type="button"
+                            class="form-btn prev-btn"
+                            id="prevBtn"
+                            onclick="previousStep()"
+                            style="display:none;"
+                        >
+                            ← Previous
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="form-btn next-btn"
+                            id="nextBtn"
+                            onclick="nextStep()"
+                        >
+                            Next →
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="form-btn submit-btn"
+                            id="submitBtn"
+                            onclick="submitCase()"
+                            style="display:none;"
+                        >
+                            Submit Case ✓
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+
+
+                <!-- ================= SUCCESS ================= -->
+
+                <div
+                    class="success-screen"
+                    id="successScreen"
+                >
+
+                    <div class="success-icon">
+                        ✓
+                    </div>
+
+                    <h2>
+                        Case Submitted Successfully
+                    </h2>
+
+                    <p>
+                        Your case information has been recorded
+                        and is ready for review by an authorized
+                        healthcare professional.
+                    </p>
+
+                    <button
+                        class="form-btn next-btn"
+                        onclick="goToDashboard()"
+                    >
+                        Go to Dashboard
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        let currentStep = 0;
+
+        const steps =
+            document.querySelectorAll(".step");
+
+        const progressFill =
+            document.getElementById("progressFill");
+
+        const stepName =
+            document.getElementById("stepName");
+
+        const stepNumber =
+            document.getElementById("stepNumber");
+
+        const prevBtn =
+            document.getElementById("prevBtn");
+
+        const nextBtn =
+            document.getElementById("nextBtn");
+
+        const submitBtn =
+            document.getElementById("submitBtn");
+
+
+        const stepNames = [
+
+            "Basic Information",
+            "Current Symptoms",
+            "Medical History",
+            "Medicines & Family History",
+            "Review & Submit"
+
+        ];
+
+
+        /* ================= SHOW STEP ================= */
+
+        function showStep(step) {
+
+            steps.forEach(function(item, index) {
+
+                item.classList.toggle(
+                    "active",
+                    index === step
+                );
+
+            });
+
+
+            const percentage =
+                ((step + 1) / steps.length) * 100;
+
+            progressFill.style.width =
+                percentage + "%";
+
+
+            stepName.textContent =
+                stepNames[step];
+
+            stepNumber.textContent =
+                "Step " + (step + 1) +
+                " of " + steps.length;
+
+
+            prevBtn.style.display =
+                step === 0 ? "none" : "block";
+
+
+            nextBtn.style.display =
+                step === steps.length - 1
+                    ? "none"
+                    : "block";
+
+
+            submitBtn.style.display =
+                step === steps.length - 1
+                    ? "block"
+                    : "none";
+
+
+            if (step === steps.length - 1) {
+
+                generateReview();
+
+            }
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        /* ================= VALIDATION ================= */
+
+        function validateCurrentStep() {
+
+            const current =
+                steps[currentStep];
+
+            const requiredFields =
+                current.querySelectorAll(
+                    "input[required], textarea[required]"
+                );
+
+
+            for (const field of requiredFields) {
+
+                if (!field.value.trim()) {
+
+                    alert(
+                        "Please fill all required fields."
+                    );
+
+                    field.focus();
+
+                    return false;
+
+                }
+
+            }
+
+            return true;
+
+        }
+
+
+        /* ================= NEXT ================= */
+
+        function nextStep() {
+
+            if (!validateCurrentStep()) {
+                return;
+            }
+
+
+            if (currentStep < steps.length - 1) {
+
+                currentStep++;
+
+                showStep(currentStep);
+
+            }
+
+        }
+
+
+        /* ================= PREVIOUS ================= */
+
+        function previousStep() {
+
+            if (currentStep > 0) {
+
+                currentStep--;
+
+                showStep(currentStep);
+
+            }
+
+        }
+
+
+        /* ================= GET CHECKED ================= */
+
+        function getChecked(name) {
+
+            const checked =
+                document.querySelectorAll(
+                    `input[name="${name}"]:checked`
+                );
+
+            return Array.from(checked)
+                .map(item => item.value)
+                .join(", ") || "None recorded";
+
+        }
+
+
+        /* ================= REVIEW ================= */
+
+        function generateReview() {
+
+            const review =
+                document.getElementById("reviewData");
+
+
+            review.innerHTML = `
+
+                <div class="review-section">
+
+                    <h3>
+                        Basic Information
+                    </h3>
+
+                    <p>
+                        <strong>Name:</strong>
+                        ${document.getElementById("fullName").value || "Not provided"}
+                        <br>
+
+                        <strong>Gender:</strong>
+                        ${document.getElementById("gender").value || "Not provided"}
+                        <br>
+
+                        <strong>Contact:</strong>
+                        ${document.getElementById("phone").value || "Not provided"}
+                    </p>
+
+                </div>
+
+
+                <div class="review-section">
+
+                    <h3>
+                        Current Symptoms
+                    </h3>
+
+                    <p>
+                        <strong>Main Symptoms:</strong>
+                        ${document.getElementById("symptoms").value || "Not provided"}
+                        <br>
+
+                        <strong>Duration:</strong>
+                        ${document.getElementById("duration").value || "Not provided"}
+                        <br>
+
+                        <strong>Severity:</strong>
+                        ${document.getElementById("severity").value || "Not provided"}
+                        <br>
+
+                        <strong>Associated Symptoms:</strong>
+                        ${getChecked("associatedSymptoms")}
+                    </p>
+
+                </div>
+
+
+                <div class="review-section">
+
+                    <h3>
+                        Medical History
+                    </h3>
+
+                    <p>
+                        <strong>Conditions:</strong>
+                        ${getChecked("conditions")}
+                        <br>
+
+                        <strong>Allergies:</strong>
+                        ${document.getElementById("allergies").value || "None recorded"}
+                        <br>
+
+                        <strong>Blood Group:</strong>
+                        ${document.getElementById("bloodGroup").value || "Not provided"}
+                    </p>
+
+                </div>
+
+
+                <div class="review-section">
+
+                    <h3>
+                        Medicines & Family History
+                    </h3>
+
+                    <p>
+                        <strong>Medicines:</strong>
+                        ${document.getElementById("medicines").value || "None recorded"}
+                        <br>
+
+                        <strong>Family History:</strong>
+                        ${document.getElementById("familyHistory").value || "None recorded"}
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* ================= SUBMIT ================= */
+
+        function submitCase() {
+
+            const consent =
+                document.getElementById("consent");
+
+
+            if (!consent.checked) {
+
+                alert(
+                    "Please provide consent before submitting the case."
+                );
+
+                return;
+
+            }
+
+
+            const caseData = {
+
+                patientName:
+                    document.getElementById("fullName").value,
+
+                dob:
+                    document.getElementById("dob").value,
+
+                gender:
+                    document.getElementById("gender").value,
+
+                phone:
+                    document.getElementById("phone").value,
+
+                symptoms:
+                    document.getElementById("symptoms").value,
+
+                duration:
+                    document.getElementById("duration").value,
+
+                severity:
+                    document.getElementById("severity").value,
+
+                associatedSymptoms:
+                    getChecked("associatedSymptoms"),
+
+                conditions:
+                    getChecked("conditions"),
+
+                allergies:
+                    document.getElementById("allergies").value,
+
+                bloodGroup:
+                    document.getElementById("bloodGroup").value,
+
+                medicines:
+                    document.getElementById("medicines").value,
+
+                familyHistory:
+                    document.getElementById("familyHistory").value,
+
+                submittedAt:
+                    new Date().toISOString()
+
+            };
+
+
+            localStorage.setItem(
+                "medinexCaseData",
+                JSON.stringify(caseData)
+            );
+
+
+            document.getElementById(
+                "intakeForm"
+            ).style.display = "none";
+
+
+            document.querySelector(
+                ".form-buttons"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "successScreen"
+            ).style.display = "block";
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        /* ================= DASHBOARD ================= */
+
+        function goToDashboard() {
+
+            window.location.href =
+                "patient-dashboard.html";
+
+        }
+
+
+        /* ================= MOBILE MENU ================= */
+
+        const menuBtn =
+            document.getElementById("menuBtn");
+
+        const navbar =
+            document.querySelector(".navbar");
+
+
+        if (menuBtn && navbar) {
+
+            menuBtn.addEventListener(
+                "click",
+                function() {
+
+                    navbar.classList.toggle(
+                        "active"
+                    );
+
+                    menuBtn.textContent =
+                        navbar.classList.contains("active")
+                            ? "✕"
+                            : "☰";
+
+                }
+            );
+
+        }
+
+
+        /* INITIAL */
+
+        showStep(0);
+
+    </script>
+
+</body>
+
+</html>
