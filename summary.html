@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediNex - Patient Summary</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8fb;
+            color: #1f2937;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #087f8c;
+        }
+
+        .logo span {
+            color: #1f2937;
+        }
+
+        .doctor-info {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Main */
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            color: #12343b;
+        }
+
+        .page-title p {
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .print-btn {
+            background: #087f8c;
+            color: white;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .print-btn:hover {
+            background: #05636d;
+        }
+
+        /* Patient Card */
+        .patient-card {
+            background: white;
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .patient-card h2 {
+            color: #087f8c;
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+
+        .patient-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .info-box label {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .info-box strong {
+            font-size: 15px;
+        }
+
+        /* Sections */
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .section h2 {
+            color: #087f8c;
+            font-size: 19px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        .section p {
+            line-height: 1.7;
+            color: #4b5563;
+        }
+
+        /* Vitals */
+        .vitals {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .vital-box {
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .vital-box h3 {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .vital-box span {
+            font-size: 20px;
+            font-weight: bold;
+            color: #12343b;
+        }
+
+        /* Alert */
+        .alert {
+            background: #fff7ed;
+            border-left: 5px solid #f59e0b;
+            padding: 15px;
+            border-radius: 6px;
+            color: #92400e;
+        }
+
+        /* Notes */
+        .notes {
+            min-height: 100px;
+            background: #f8fafc;
+            border-radius: 7px;
+            padding: 15px;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+
+            .patient-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .vitals {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            header {
+                padding: 15px 20px;
+            }
+
+            .page-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .patient-grid,
+            .vitals {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+        }
+
+        /* Print */
+        @media print {
+
+            .print-btn {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .patient-card,
+            .section {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            Medi<span>Nex</span>
+        </div>
+
+        <div class="doctor-info">
+            Doctor: Dr. Rahul Kumar
+        </div>
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <!-- Title -->
+        <div class="page-title">
+            <div>
+                <h1>Patient Case Summary</h1>
+                <p>Digital consultation and clinical record</p>
+            </div>
+
+            <button class="print-btn" onclick="window.print()">
+                🖨 Print Summary
+            </button>
+        </div>
+
+
+        <!-- Patient Information -->
+        <div class="patient-card">
+
+            <h2>Patient Information</h2>
+
+            <div class="patient-grid">
+
+                <div class="info-box">
+                    <label>Patient Name</label>
+                    <strong>Rahul Sharma</strong>
+                </div>
+
+                <div class="info-box">
+                    <label>Patient ID</label>
+                    <strong>MNX-2026-001</strong>
+                </div>
+
+                <div class="info-box">
+                    <label>Age</label>
+                    <strong>35 Years</strong>
+                </div>
+
+                <div class="info-box">
+                    <label>Gender</label>
+                    <strong>Male</strong>
+                </div>
+
+                <div class="info-box">
+                    <label>Contact</label>
+                    <strong>98XXXXXXXX</strong>
+                </div>
+
+                <div class="info-box">
+                    <label>Consultation Date</label>
+                    <strong>01 September 2026</strong>
+                </div>
+
+                <div class="info-box">
+                    <label>Blood Group</label>
+                    <strong>B+</strong>
+                </div>
+
+                <div class="info-box">
+                    <label>Doctor</label>
+                    <strong>Dr. Rahul Kumar</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Chief Complaint -->
+        <div class="section">
+
+            <h2>Chief Complaint</h2>
+
+            <p>
+                Patient reported fever, headache and general weakness
+                for the last three days.
+            </p>
+
+        </div>
+
+
+        <!-- Symptoms -->
+        <div class="section">
+
+            <h2>Symptoms</h2>
+
+            <p>
+                • Fever<br>
+                • Headache<br>
+                • Weakness<br>
+                • Mild body pain<br>
+                • Loss of appetite
+            </p>
+
+        </div>
+
+
+        <!-- Vitals -->
+        <div class="section">
+
+            <h2>Vital Signs</h2>
+
+            <div class="vitals">
+
+                <div class="vital-box">
+                    <h3>Temperature</h3>
+                    <span>101°F</span>
+                </div>
+
+                <div class="vital-box">
+                    <h3>Blood Pressure</h3>
+                    <span>120/80</span>
+                </div>
+
+                <div class="vital-box">
+                    <h3>Heart Rate</h3>
+                    <span>82 bpm</span>
+                </div>
+
+                <div class="vital-box">
+                    <h3>SpO₂</h3>
+                    <span>98%</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Medical History -->
+        <div class="section">
+
+            <h2>Medical History</h2>
+
+            <p>
+                No major previous medical history reported.
+                No known drug allergies reported by the patient.
+            </p>
+
+        </div>
+
+
+        <!-- Red Flag Alert -->
+        <div class="section">
+
+            <h2>Clinical Alert</h2>
+
+            <div class="alert">
+                ⚠ No critical red-flag symptoms detected during
+                initial case-taking.
+            </div>
+
+        </div>
+
+
+        <!-- Clinical Notes -->
+        <div class="section">
+
+            <h2>Doctor's Clinical Notes</h2>
+
+            <div class="notes">
+                Patient examined during initial consultation.
+                Further clinical evaluation and investigations may
+                be advised based on the patient's condition.
+            </div>
+
+        </div>
+
+
+        <!-- Diagnosis -->
+        <div class="section">
+
+            <h2>Assessment / Diagnosis</h2>
+
+            <p>
+                Provisional assessment recorded by the attending doctor.
+                Final diagnosis should be based on clinical examination
+                and required investigations.
+            </p>
+
+        </div>
+
+
+        <!-- Follow Up -->
+        <div class="section">
+
+            <h2>Follow-up</h2>
+
+            <p>
+                Follow-up consultation as advised by the doctor.
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+        © 2026 MediNex | Digital Patient Case-Taking System
+    </footer>
+
+
+    <script>
+        // Display current date if required
+        console.log("MediNex Patient Summary Loaded");
+    </script>
+
+</body>
+</html>
+
