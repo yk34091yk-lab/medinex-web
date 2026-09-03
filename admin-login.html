@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Login | MediNex</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f8f9;
+        }
+
+        .admin-login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+        }
+
+        .admin-login-card {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            border: 1px solid #e0e9eb;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.06);
+        }
+
+        .admin-logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .admin-logo-icon {
+            width: 58px;
+            height: 58px;
+            margin: auto;
+            border-radius: 14px;
+            background: #087f8c;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .admin-logo h1 {
+            margin: 12px 0 4px;
+            color: #173b4a;
+            font-size: 25px;
+        }
+
+        .admin-logo p {
+            margin: 0;
+            color: #7a8a90;
+            font-size: 12px;
+        }
+
+        .admin-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #eef8f8;
+            color: #087f8c;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #304d58;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d5e1e4;
+            border-radius: 8px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .form-group input:focus {
+            border-color: #087f8c;
+        }
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box input {
+            padding-right: 70px;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #087f8c;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .login-btn {
+            width: 100%;
+            border: none;
+            background: #087f8c;
+            color: white;
+            padding: 13px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .login-btn:hover {
+            background: #066c77;
+        }
+
+        .error-message {
+            display: none;
+            background: #fff1f1;
+            color: #a52e2e;
+            border: 1px solid #f0d2d2;
+            border-radius: 7px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 11px;
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #087f8c;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .security-note {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f5f9fa;
+            color: #718189;
+            font-size: 10px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        @media (max-width: 500px) {
+
+            .admin-login-card {
+                padding: 25px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <main class="admin-login-page">
+
+        <div class="admin-login-card">
+
+            <div class="admin-logo">
+
+                <div class="admin-logo-icon">
+                    M
+                </div>
+
+                <h1>MediNex</h1>
+
+                <p>Healthcare Management System</p>
+
+                <span class="admin-badge">
+                    ADMIN PORTAL
+                </span>
+
+            </div>
+
+
+            <div
+                class="error-message"
+                id="errorMessage"
+            >
+                Invalid admin credentials. Please try again.
+            </div>
+
+
+            <form id="adminLoginForm">
+
+                <div class="form-group">
+
+                    <label for="adminEmail">
+                        Admin Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="adminEmail"
+                        placeholder="Enter admin email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="adminPassword">
+                        Password
+                    </label>
+
+                    <div class="password-box">
+
+                        <input
+                            type="password"
+                            id="adminPassword"
+                            placeholder="Enter password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword()"
+                        >
+                            SHOW
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                >
+                    Login to Admin Portal
+                </button>
+
+            </form>
+
+
+            <div class="security-note">
+                🔒 Admin access is restricted to authorized
+                MediNex administrators.
+            </div>
+
+
+            <a
+                href="index.html"
+                class="back-home"
+            >
+                ← Back to MediNex
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        function togglePassword() {
+
+            const password =
+                document.getElementById(
+                    "adminPassword"
+                );
+
+            const button =
+                document.querySelector(
+                    ".show-password"
+                );
+
+
+            if (password.type === "password") {
+
+                password.type = "text";
+
+                button.textContent = "HIDE";
+
+            } else {
+
+                password.type = "password";
+
+                button.textContent = "SHOW";
+
+            }
+
+        }
+
+
+        document
+            .getElementById("adminLoginForm")
+            .addEventListener(
+                "submit",
+                function(event) {
+
+                    event.preventDefault();
+
+
+                    const email =
+                        document.getElementById(
+                            "adminEmail"
+                        ).value.trim();
+
+
+                    const password =
+                        document.getElementById(
+                            "adminPassword"
+                        ).value;
+
+
+                    /*
+                     * DEMO LOGIN
+                     *
+                     * Real project mein credentials
+                     * backend/database se verify honge.
+                     */
+
+                    const adminEmail =
+                        "admin@medinex.com";
+
+                    const adminPassword =
+                        "admin123";
+
+
+                    if (
+                        email === adminEmail &&
+                        password === adminPassword
+                    ) {
+
+                        localStorage.setItem(
+                            "medinexAdminLoggedIn",
+                            "true"
+                        );
+
+
+                        window.location.href =
+                            "admin-dashboard.html";
+
+                    } else {
+
+                        document.getElementById(
+                            "errorMessage"
+                        ).style.display =
+                            "block";
+
+                    }
+
+                }
+            );
+
+    </script>
+
+</body>
+
+</html>
