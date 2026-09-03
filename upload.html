@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Medical Documents | MediNex</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        .documents-page {
+            min-height: calc(100vh - 76px);
+            background: #f5f9fa;
+            padding: 35px 5%;
+        }
+
+        .documents-container {
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        .documents-header {
+            margin-bottom: 25px;
+        }
+
+        .documents-header h1 {
+            color: #173b4a;
+            font-size: 30px;
+            margin-bottom: 6px;
+        }
+
+        .documents-header p {
+            color: #718189;
+            font-size: 14px;
+        }
+
+
+        /* UPLOAD BOX */
+
+        .upload-card {
+            background: white;
+            border: 1px solid #e1eaec;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 22px;
+        }
+
+        .upload-card h2 {
+            color: #173b4a;
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .upload-card > p {
+            color: #718189;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .drop-zone {
+            border: 2px dashed #bcd7db;
+            border-radius: 13px;
+            padding: 40px 20px;
+            text-align: center;
+            background: #f8fcfc;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            border-color: #087f8c;
+            background: #f0fafb;
+        }
+
+        .upload-icon {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .drop-zone h3 {
+            color: #173b4a;
+            font-size: 16px;
+            margin-bottom: 7px;
+        }
+
+        .drop-zone p {
+            color: #718189;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .browse-btn {
+            display: inline-block;
+            background: #087f8c;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+
+        /* FILE TYPE */
+
+        .file-info {
+            margin-top: 15px;
+            padding: 12px;
+            background: #eef9f9;
+            border-radius: 8px;
+            color: #087f8c;
+            font-size: 11px;
+        }
+
+
+        /* SELECT */
+
+        .document-type {
+            margin-top: 18px;
+        }
+
+        .document-type label {
+            display: block;
+            color: #304d58;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .document-type select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d4e2e5;
+            border-radius: 8px;
+            outline: none;
+            color: #173b4a;
+        }
+
+
+        /* PENDING FILES */
+
+        .selected-files {
+            margin-top: 20px;
+        }
+
+        .selected-file {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px;
+            border: 1px solid #e1eaec;
+            border-radius: 9px;
+            margin-bottom: 8px;
+            gap: 10px;
+        }
+
+        .file-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-icon {
+            width: 38px;
+            height: 38px;
+            background: #eaf7f7;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .file-left strong {
+            display: block;
+            color: #173b4a;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        .file-left small {
+            color: #7b8b91;
+            font-size: 10px;
+        }
+
+        .remove-file {
+            border: none;
+            background: #fff0f0;
+            color: #b22d2d;
+            padding: 7px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+
+        /* UPLOAD BUTTON */
+
+        .upload-submit {
+            margin-top: 18px;
+            width: 100%;
+            border: none;
+            background: #087f8c;
+            color: white;
+            padding: 13px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            display: none;
+        }
+
+        .upload-submit:hover {
+            background: #066b76;
+        }
+
+
+        /* DOCUMENT LIST */
+
+        .documents-list {
+            background: white;
+            border: 1px solid #e1eaec;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .documents-list h2 {
+            color: #173b4a;
+            font-size: 18px;
+            margin-bottom: 18px;
+        }
+
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #edf1f2;
+            gap: 15px;
+        }
+
+        .document-item:last-child {
+            border-bottom: none;
+        }
+
+        .document-details {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .document-icon {
+            width: 43px;
+            height: 43px;
+            background: #eef8f8;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .document-details strong {
+            display: block;
+            color: #173b4a;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .document-details small {
+            color: #7b8b91;
+            font-size: 10px;
+        }
+
+        .document-status {
+            color: #18794e;
+            background: #eaf8f0;
+            padding: 6px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .empty-documents {
+            text-align: center;
+            padding: 30px;
+            color: #718189;
+            font-size: 13px;
+        }
+
+
+        /* SECURITY */
+
+        .security-note {
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 9px;
+            background: #eef9f9;
+            color: #087f8c;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 650px) {
+
+            .documents-page {
+                padding: 25px 4%;
+            }
+
+            .documents-header h1 {
+                font-size: 25px;
+            }
+
+            .upload-card,
+            .documents-list {
+                padding: 18px;
+            }
+
+            .document-item {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .document-status {
+                margin-left: 55px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <a href="index.html" class="logo">
+
+            <div class="logo-icon">
+                M
+            </div>
+
+            <div class="logo-text">
+                Medi<span>N</span>ex
+            </div>
+
+        </a>
+
+
+        <nav class="navbar">
+
+            <a href="patient-dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="intake.html">
+                Case Taking
+            </a>
+
+            <a href="upload.html">
+                Documents
+            </a>
+
+        </nav>
+
+
+        <button class="menu-btn" id="menuBtn">
+            ☰
+        </button>
+
+    </header>
+
+
+
+    <!-- MAIN -->
+
+    <main class="documents-page">
+
+        <div class="documents-container">
+
+
+            <div class="documents-header">
+
+                <h1>
+                    Medical Documents
+                </h1>
+
+                <p>
+                    Upload prescriptions, medical reports and
+                    other healthcare documents for your consultation.
+                </p>
+
+            </div>
+
+
+
+            <!-- UPLOAD CARD -->
+
+            <div class="upload-card">
+
+                <h2>
+                    Upload New Document
+                </h2>
+
+                <p>
+                    Supported formats: PDF, JPG, JPEG and PNG.
+                </p>
+
+
+                <!-- DROP ZONE -->
+
+                <div
+                    class="drop-zone"
+                    id="dropZone"
+                >
+
+                    <div class="upload-icon">
+                        📄
+                    </div>
+
+                    <h3>
+                        Drag & Drop your document here
+                    </h3>
+
+                    <p>
+                        or click below to browse files
+                    </p>
+
+
+                    <label
+                        for="fileInput"
+                        class="browse-btn"
+                    >
+                        Choose File
+                    </label>
+
+                    <input
+                        type="file"
+                        id="fileInput"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                    >
+
+                </div>
+
+
+                <!-- FILE INFO -->
+
+                <div class="file-info">
+
+                    🔐 Only upload documents related to
+                    your healthcare consultation.
+
+                </div>
+
+
+                <!-- DOCUMENT TYPE -->
+
+                <div class="document-type">
+
+                    <label>
+                        Document Type
+                    </label>
+
+                    <select id="documentType">
+
+                        <option value="">
+                            Select document type
+                        </option>
+
+                        <option>
+                            Prescription
+                        </option>
+
+                        <option>
+                            Blood Test Report
+                        </option>
+
+                        <option>
+                            X-Ray Report
+                        </option>
+
+                        <option>
+                            Scan / Imaging Report
+                        </option>
+
+                        <option>
+                            Medical Certificate
+                        </option>
+
+                        <option>
+                            Other Medical Document
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- SELECTED FILES -->
+
+                <div
+                    class="selected-files"
+                    id="selectedFiles"
+                ></div>
+
+
+                <button
+                    class="upload-submit"
+                    id="uploadButton"
+                    onclick="uploadDocuments()"
+                >
+                    Upload Document
+                </button>
+
+            </div>
+
+
+
+            <!-- DOCUMENT LIST -->
+
+            <div class="documents-list">
+
+                <h2>
+                    Uploaded Documents
+                </h2>
+
+
+                <div id="documentsList">
+
+                    <div class="empty-documents">
+
+                        📂 No documents uploaded yet.
+
+                    </div>
+
+                </div>
+
+
+                <div class="security-note">
+
+                    🔒 <strong>Privacy Notice:</strong>
+                    This frontend demo stores document information
+                    locally in your browser. A production MediNex
+                    system should use secure server-side storage,
+                    access control and encryption.
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        let selectedFile = null;
+
+
+        const fileInput =
+            document.getElementById("fileInput");
+
+        const dropZone =
+            document.getElementById("dropZone");
+
+        const selectedFiles =
+            document.getElementById("selectedFiles");
+
+        const uploadButton =
+            document.getElementById("uploadButton");
+
+        const documentType =
+            document.getElementById("documentType");
+
+
+
+        /* ================= FILE SELECT ================= */
+
+        fileInput.addEventListener(
+            "change",
+            function() {
+
+                if (this.files.length > 0) {
+
+                    handleFile(this.files[0]);
+
+                }
+
+            }
+        );
+
+
+
+        /* ================= DRAG DROP ================= */
+
+        dropZone.addEventListener(
+            "dragover",
+            function(event) {
+
+                event.preventDefault();
+
+                dropZone.classList.add("dragover");
+
+            }
+        );
+
+
+        dropZone.addEventListener(
+            "dragleave",
+            function() {
+
+                dropZone.classList.remove(
+                    "dragover"
+                );
+
+            }
+        );
+
+
+        dropZone.addEventListener(
+            "drop",
+            function(event) {
+
+                event.preventDefault();
+
+                dropZone.classList.remove(
+                    "dragover"
+                );
+
+
+                if (event.dataTransfer.files.length > 0) {
+
+                    handleFile(
+                        event.dataTransfer.files[0]
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* ================= HANDLE FILE ================= */
+
+        function handleFile(file) {
+
+            const allowedTypes = [
+
+                "application/pdf",
+                "image/jpeg",
+                "image/png"
+
+            ];
+
+
+            if (!allowedTypes.includes(file.type)) {
+
+                alert(
+                    "Please select a PDF, JPG, JPEG or PNG file."
+                );
+
+                return;
+
+            }
+
+
+            if (file.size > 5 * 1024 * 1024) {
+
+                alert(
+                    "File size should be less than 5 MB."
+                );
+
+                return;
+
+            }
+
+
+            selectedFile = file;
+
+            displaySelectedFile();
+
+        }
+
+
+
+        /* ================= DISPLAY ================= */
+
+        function displaySelectedFile() {
+
+            if (!selectedFile) {
+                return;
+            }
+
+
+            selectedFiles.innerHTML = `
+
+                <div class="selected-file">
+
+                    <div class="file-left">
+
+                        <div class="file-icon">
+                            📄
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                ${selectedFile.name}
+                            </strong>
+
+                            <small>
+                                ${formatSize(selectedFile.size)}
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="remove-file"
+                        onclick="removeSelectedFile()"
+                    >
+                        Remove
+                    </button>
+
+                </div>
+
+            `;
+
+
+            uploadButton.style.display =
+                "block";
+
+        }
+
+
+
+        /* ================= REMOVE ================= */
+
+        function removeSelectedFile() {
+
+            selectedFile = null;
+
+            fileInput.value = "";
+
+            selectedFiles.innerHTML = "";
+
+            uploadButton.style.display =
+                "none";
+
+        }
+
+
+
+        /* ================= SIZE ================= */
+
+        function formatSize(bytes) {
+
+            if (bytes < 1024) {
+
+                return bytes + " B";
+
+            }
+
+            if (bytes < 1024 * 1024) {
+
+                return (
+                    bytes / 1024
+                ).toFixed(1) + " KB";
+
+            }
+
+            return (
+                bytes / (1024 * 1024)
+            ).toFixed(1) + " MB";
+
+        }
+
+
+
+        /* ================= UPLOAD ================= */
+
+        function uploadDocuments() {
+
+            if (!selectedFile) {
+
+                alert(
+                    "Please select a document."
+                );
+
+                return;
+
+            }
+
+
+            if (!documentType.value) {
+
+                alert(
+                    "Please select the document type."
+                );
+
+                return;
+
+            }
+
+
+            const documentData = {
+
+                name:
+                    selectedFile.name,
+
+                type:
+                    documentType.value,
+
+                size:
+                    formatSize(selectedFile.size),
+
+                date:
+                    new Date().toLocaleDateString(),
+
+                status:
+                    "Uploaded"
+
+            };
+
+
+            let documents =
+                JSON.parse(
+                    localStorage.getItem(
+                        "medinexDocuments"
+                    )
+                ) || [];
+
+
+            documents.push(
+                documentData
+            );
+
+
+            localStorage.setItem(
+                "medinexDocuments",
+                JSON.stringify(documents)
+            );
+
+
+            alert(
+                "Document uploaded successfully."
+            );
+
+
+            removeSelectedFile();
+
+            documentType.value = "";
+
+            displayDocuments();
+
+        }
+
+
+
+        /* ================= DISPLAY DOCUMENTS ================= */
+
+        function displayDocuments() {
+
+            const list =
+                document.getElementById(
+                    "documentsList"
+                );
+
+
+            const documents =
+                JSON.parse(
+                    localStorage.getItem(
+                        "medinexDocuments"
+                    )
+                ) || [];
+
+
+            if (documents.length === 0) {
+
+                list.innerHTML = `
+
+                    <div class="empty-documents">
+
+                        📂 No documents uploaded yet.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            list.innerHTML = "";
+
+
+            documents.forEach(
+                function(doc, index) {
+
+                    list.innerHTML += `
+
+                        <div class="document-item">
+
+                            <div class="document-details">
+
+                                <div class="document-icon">
+                                    📄
+                                </div>
+
+                                <div>
+
+                                    <strong>
+                                        ${doc.name}
+                                    </strong>
+
+                                    <small>
+                                        ${doc.type}
+                                        •
+                                        ${doc.size}
+                                        •
+                                        ${doc.date}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <span class="document-status">
+                                ${doc.status}
+                            </span>
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+        }
+
+
+
+        /* ================= MOBILE MENU ================= */
+
+        const menuBtn =
+            document.getElementById("menuBtn");
+
+        const navbar =
+            document.querySelector(".navbar");
+
+
+        if (menuBtn && navbar) {
+
+            menuBtn.addEventListener(
+                "click",
+                function() {
+
+                    navbar.classList.toggle(
+                        "active"
+                    );
+
+                    menuBtn.textContent =
+                        navbar.classList.contains("active")
+                            ? "✕"
+                            : "☰";
+
+                }
+            );
+
+        }
+
+
+
+        /* INITIAL LOAD */
+
+        displayDocuments();
+
+    </script>
+
+</body>
+
+</html>
