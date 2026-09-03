@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Doctor Dashboard | MediNex</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* ================= PAGE ================= */
+
+        .doctor-dashboard {
+            min-height: calc(100vh - 76px);
+            background: #f5f9fa;
+            display: flex;
+        }
+
+
+        /* ================= SIDEBAR ================= */
+
+        .doctor-sidebar {
+            width: 250px;
+            min-height: calc(100vh - 76px);
+            background: #173b4a;
+            color: white;
+            padding: 25px 15px;
+            position: sticky;
+            top: 76px;
+            align-self: flex-start;
+        }
+
+        .doctor-profile {
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.08);
+            margin-bottom: 25px;
+        }
+
+        .doctor-avatar-large {
+            width: 50px;
+            height: 50px;
+            background: #087f8c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .doctor-profile strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .doctor-profile small {
+            color: #bdcdd1;
+            font-size: 11px;
+        }
+
+        .doctor-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .doctor-menu a {
+            color: #c7d6da;
+            padding: 13px 14px;
+            border-radius: 9px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .doctor-menu a:hover,
+        .doctor-menu a.active {
+            background: #087f8c;
+            color: white;
+        }
+
+        .doctor-logout {
+            margin-top: 25px;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            padding-top: 20px;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .doctor-main {
+            flex: 1;
+            padding: 35px;
+            max-width: 1500px;
+        }
+
+        .doctor-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            gap: 20px;
+        }
+
+        .doctor-top h1 {
+            color: #173b4a;
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .doctor-top p {
+            color: #718189;
+            font-size: 14px;
+        }
+
+        .doctor-notification {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            border: 1px solid #dce7e9;
+            background: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+
+        /* ================= STATS ================= */
+
+        .doctor-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .doctor-stat {
+            background: white;
+            border: 1px solid #e1eaec;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #eaf7f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 14px;
+        }
+
+        .doctor-stat strong {
+            display: block;
+            font-size: 25px;
+            color: #173b4a;
+        }
+
+        .doctor-stat span {
+            color: #718189;
+            font-size: 12px;
+        }
+
+
+        /* ================= ALERT ================= */
+
+        .red-alert {
+            background: #fff7f7;
+            border: 1px solid #f2d6d6;
+            border-left: 4px solid #c83c3c;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .alert-left {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+        }
+
+        .alert-icon {
+            font-size: 22px;
+        }
+
+        .red-alert strong {
+            display: block;
+            color: #9f2525;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .red-alert p {
+            color: #7d6262;
+            font-size: 12px;
+        }
+
+        .review-alert {
+            border: none;
+            background: #c83c3c;
+            color: white;
+            padding: 9px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        /* ================= CONTENT ================= */
+
+        .doctor-content {
+            display: grid;
+            grid-template-columns: 1.5fr 0.8fr;
+            gap: 22px;
+        }
+
+        .doctor-card {
+            background: white;
+            border: 1px solid #e1eaec;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .doctor-card-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .doctor-card-title h2 {
+            color: #173b4a;
+            font-size: 18px;
+        }
+
+        .doctor-card-title a {
+            color: #087f8c;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        /* ================= PATIENT QUEUE ================= */
+
+        .patient-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #edf1f2;
+        }
+
+        .patient-row:last-child {
+            border-bottom: none;
+        }
+
+        .patient-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .patient-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #eaf7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .patient-info strong {
+            display: block;
+            font-size: 13px;
+            color: #173b4a;
+        }
+
+        .patient-info small {
+            color: #7b8b91;
+            font-size: 11px;
+        }
+
+        .patient-status {
+            padding: 6px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .waiting {
+            color: #9a6700;
+            background: #fff6df;
+        }
+
+        .in-consultation {
+            color: #087f8c;
+            background: #eaf8f8;
+        }
+
+        .completed {
+            color: #18794e;
+            background: #eaf8f0;
+        }
+
+        .open-patient {
+            border: 1px solid #d8e6e8;
+            background: white;
+            color: #087f8c;
+            padding: 7px 11px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .open-patient:hover {
+            background: #eef9f9;
+        }
+
+
+        /* ================= SUMMARY ================= */
+
+        .summary-box {
+            background: #f5fafb;
+            border-radius: 11px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+
+        .summary-box strong {
+            display: block;
+            color: #173b4a;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .summary-box p {
+            color: #718189;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* ================= ACTIONS ================= */
+
+        .doctor-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .doctor-action {
+            border: 1px solid #dce8ea;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .doctor-action:hover {
+            border-color: #087f8c;
+            background: #f4fbfb;
+        }
+
+        .doctor-action strong {
+            display: block;
+            color: #173b4a;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .doctor-action span {
+            color: #7b8b91;
+            font-size: 10px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1100px) {
+
+            .doctor-sidebar {
+                width: 220px;
+            }
+
+            .doctor-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .doctor-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 800px) {
+
+            .doctor-dashboard {
+                display: block;
+            }
+
+            .doctor-sidebar {
+                width: 100%;
+                min-height: auto;
+                position: static;
+                padding: 15px;
+            }
+
+            .doctor-profile {
+                display: none;
+            }
+
+            .doctor-menu {
+                flex-direction: row;
+                overflow-x: auto;
+            }
+
+            .doctor-menu a {
+                white-space: nowrap;
+            }
+
+            .doctor-logout {
+                display: none;
+            }
+
+            .doctor-main {
+                padding: 25px 5%;
+            }
+        }
+
+
+        @media (max-width: 550px) {
+
+            .doctor-top h1 {
+                font-size: 25px;
+            }
+
+            .doctor-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .red-alert {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .patient-row {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .doctor-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <a href="index.html" class="logo">
+
+            <div class="logo-icon">
+                M
+            </div>
+
+            <div class="logo-text">
+                Medi<span>N</span>ex
+            </div>
+
+        </a>
+
+
+        <nav class="navbar">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="#">
+                Clinical Portal
+            </a>
+
+        </nav>
+
+
+        <button class="menu-btn" id="menuBtn">
+            ☰
+        </button>
+
+    </header>
+
+
+
+    <!-- ================= DASHBOARD ================= -->
+
+    <main class="doctor-dashboard">
+
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="doctor-sidebar">
+
+            <div class="doctor-profile">
+
+                <div class="doctor-avatar-large">
+                    🩺
+                </div>
+
+                <strong>
+                    Dr. Medical Team
+                </strong>
+
+                <small id="doctorDepartment">
+                    General Medicine
+                </small>
+
+            </div>
+
+
+            <nav class="doctor-menu">
+
+                <a
+                    href="doctor-dashboard.html"
+                    class="active"
+                >
+                    🏠 Dashboard
+                </a>
+
+                <a href="doctor-patients.html">
+                    👥 Patients
+                </a>
+
+                <a href="doctor-consultation.html">
+                    🩺 Consultations
+                </a>
+
+                <a href="doctor-alerts.html">
+                    🚨 Red Flags
+                </a>
+
+                <a href="doctor-history.html">
+                    📋 Patient History
+                </a>
+
+                <a href="doctor-profile.html">
+                    👤 Profile
+                </a>
+
+            </nav>
+
+
+            <div class="doctor-logout">
+
+                <a
+                    href="#"
+                    onclick="doctorLogout()"
+                    style="color:#c7d6da;"
+                >
+                    🚪 Logout
+                </a>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- ================= MAIN ================= -->
+
+        <section class="doctor-main">
+
+
+            <!-- TOP -->
+
+            <div class="doctor-top">
+
+                <div>
+
+                    <h1>
+                        Doctor Dashboard
+                    </h1>
+
+                    <p>
+                        Review patient information and manage today's consultations.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="doctor-notification"
+                    onclick="showDoctorNotification()"
+                >
+                    🔔
+                </button>
+
+            </div>
+
+
+
+            <!-- ================= STATS ================= -->
+
+            <div class="doctor-stats">
+
+
+                <div class="doctor-stat">
+
+                    <div class="stat-icon">
+                        👥
+                    </div>
+
+                    <strong>
+                        12
+                    </strong>
+
+                    <span>
+                        Patients Today
+                    </span>
+
+                </div>
+
+
+                <div class="doctor-stat">
+
+                    <div class="stat-icon">
+                        📅
+                    </div>
+
+                    <strong>
+                        8
+                    </strong>
+
+                    <span>
+                        Consultations
+                    </span>
+
+                </div>
+
+
+                <div class="doctor-stat">
+
+                    <div class="stat-icon">
+                        ⏳
+                    </div>
+
+                    <strong>
+                        4
+                    </strong>
+
+                    <span>
+                        Waiting Patients
+                    </span>
+
+                </div>
+
+
+                <div class="doctor-stat">
+
+                    <div class="stat-icon">
+                        🚨
+                    </div>
+
+                    <strong>
+                        2
+                    </strong>
+
+                    <span>
+                        Red Flags</span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= RED FLAG ================= -->
+
+            <div class="red-alert">
+
+                <div class="alert-left">
+
+                    <div class="alert-icon">
+                        🚨
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            2 patients require attention
+                        </strong>
+
+                        <p>
+                            Red-flag symptoms were identified
+                            during initial case-taking.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="review-alert"
+                    onclick="reviewAlerts()"
+                >
+                    Review Alerts
+                </button>
+
+            </div>
+
+
+
+            <!-- ================= CONTENT ================= -->
+
+            <div class="doctor-content">
+
+
+                <!-- PATIENT QUEUE -->
+
+                <div class="doctor-card">
+
+                    <div class="doctor-card-title">
+
+                        <h2>
+                            Today's Patient Queue
+                        </h2>
+
+                        <a href="doctor-patients.html">
+                            View All
+                        </a>
+
+                    </div>
+
+
+                    <!-- PATIENT 1 -->
+
+                    <div class="patient-row">
+
+                        <div class="patient-info">
+
+                            <div class="patient-avatar">
+                                👤
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Patient A
+                                </strong>
+
+                                <small>
+                                    ID: MED1024 • General Consultation
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="patient-status waiting">
+                            Waiting
+                        </span>
+
+
+                        <button
+                            class="open-patient"
+                            onclick="openPatient('MED1024')"
+                        >
+                            Open
+                        </button>
+
+                    </div>
+
+
+                    <!-- PATIENT 2 -->
+
+                    <div class="patient-row">
+
+                        <div class="patient-info">
+
+                            <div class="patient-avatar">
+                                👤
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Patient B
+                                </strong>
+
+                                <small>
+                                    ID: MED1025 • Follow-up
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="patient-status in-consultation">
+                            In Consultation
+                        </span>
+
+
+                        <button
+                            class="open-patient"
+                            onclick="openPatient('MED1025')"
+                        >
+                            Open
+                        </button>
+
+                    </div>
+
+
+                    <!-- PATIENT 3 -->
+
+                    <div class="patient-row">
+
+                        <div class="patient-info">
+
+                            <div class="patient-avatar">
+                                👤
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Patient C
+                                </strong>
+
+                                <small>
+                                    ID: MED1026 • Health Review
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="patient-status waiting">
+                            Waiting
+                        </span>
+
+
+                        <button
+                            class="open-patient"
+                            onclick="openPatient('MED1026')"
+                        >
+                            Open
+                        </button>
+
+                    </div>
+
+
+                    <!-- PATIENT 4 -->
+
+                    <div class="patient-row">
+
+                        <div class="patient-info">
+
+                            <div class="patient-avatar">
+                                👤
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Patient D
+                                </strong>
+
+                                <small>
+                                    ID: MED1027 • Consultation
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <span class="patient-status completed">
+                            Completed
+                        </span>
+
+
+                        <button
+                            class="open-patient"
+                            onclick="openPatient('MED1027')"
+                        >
+                            View
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CLINICAL SUMMARY -->
+
+                <div class="doctor-card">
+
+                    <div class="doctor-card-title">
+
+                        <h2>
+                            Latest Case Summary
+                        </h2>
+
+                    </div>
+
+
+                    <div class="summary-box">
+
+                        <strong>
+                            Chief Complaint
+                        </strong>
+
+                        <p>
+                            Patient reported recurring
+                            headache and fatigue.
+                        </p>
+
+                    </div>
+
+
+                    <div class="summary-box">
+
+                        <strong>
+                            Duration
+                        </strong>
+
+                        <p>
+                            Symptoms reported for approximately
+                            one week.
+                        </p>
+
+                    </div>
+
+
+                    <div class="summary-box">
+
+                        <strong>
+                            Red Flag
+                        </strong>
+
+                        <p style="color:#a62e2e;">
+                            ⚠️ Requires physician review.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        onclick="openCaseSummary()"
+                        style="
+                        width:100%;
+                        padding:12px;
+                        border:none;
+                        background:#087f8c;
+                        color:white;
+                        border-radius:8px;
+                        cursor:pointer;
+                        font-weight:700;
+                        "
+                    >
+                        Open Full Case
+                    </button>
+
+                </div>
+
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="doctor-card">
+
+                    <div class="doctor-card-title">
+
+                        <h2>
+                            Quick Actions
+                        </h2>
+
+                    </div>
+
+
+                    <div class="doctor-actions">
+
+
+                        <button
+                            class="doctor-action"
+                            onclick="startConsultation()"
+                        >
+
+                            <strong>
+                                🩺 Start Consultation
+                            </strong>
+
+                            <span>
+                                Open patient case-taking
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="doctor-action"
+                            onclick="reviewAlerts()"
+                        >
+
+                            <strong>
+                                🚨 Review Red Flags
+                            </strong>
+
+                            <span>
+                                Check priority cases
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="doctor-action"
+                            onclick="openHistory()"
+                        >
+
+                            <strong>
+                                📋 Patient History
+                            </strong>
+
+                            <span>
+                                View medical timeline
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="doctor-action"
+                            onclick="saveCase()"
+                        >
+
+                            <strong>
+                                💾 Save Case
+                            </strong>
+
+                            <span>
+                                Save clinical notes
+                            </span>
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SECURITY -->
+
+                <div class="doctor-card">
+
+                    <div class="doctor-card-title">
+
+                        <h2>
+                            Data Security
+                        </h2>
+
+                    </div>
+
+                    <p style="
+                        color:#718189;
+                        font-size:13px;
+                        line-height:1.6;
+                    ">
+
+                        🔐 Patient information should only be
+                        accessed by authorized healthcare
+                        professionals. All clinical actions
+                        should be logged and protected by
+                        secure authentication.
+
+                    </p>
+
+
+                    <div style="
+                        margin-top:15px;
+                        background:#eef9f9;
+                        color:#087f8c;
+                        padding:11px;
+                        border-radius:8px;
+                        font-size:12px;
+                    ">
+
+                        ✓ Secure clinical session active
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        /* ================= LOAD DOCTOR DATA ================= */
+
+        const doctorDepartment =
+            localStorage.getItem("medinexDepartment");
+
+        if (doctorDepartment) {
+
+            const departmentNames = {
+
+                general: "General Medicine",
+                ayush: "AYUSH",
+                cardiology: "Cardiology",
+                pediatrics: "Pediatrics",
+                orthopedics: "Orthopedics",
+                other: "Other Department"
+
+            };
+
+            document.getElementById(
+                "doctorDepartment"
+            ).textContent =
+                departmentNames[doctorDepartment] ||
+                "Medical Department";
+        }
+
+
+        /* ================= OPEN PATIENT ================= */
+
+        function openPatient(patientId) {
+
+            localStorage.setItem(
+                "selectedPatient",
+                patientId
+            );
+
+            alert(
+                "Patient " +
+                patientId +
+                " selected. Patient case page will open in the next module."
+            );
+
+        }
+
+
+        /* ================= ALERTS ================= */
+
+        function reviewAlerts() {
+
+            alert(
+                "Red Flag Center\n\n" +
+                "2 cases require physician review."
+            );
+
+        }
+
+
+        /* ================= CASE SUMMARY ================= */
+
+        function openCaseSummary() {
+
+            alert(
+                "Opening complete clinical case summary..."
+            );
+
+        }
+
+
+        /* ================= CONSULTATION ================= */
+
+        function startConsultation() {
+
+            alert(
+                "Patient consultation module will open here."
+            );
+
+        }
+
+
+        /* ================= HISTORY ================= */
+
+        function openHistory() {
+
+            alert(
+                "Patient medical history module will open here."
+            );
+
+        }
+
+
+        /* ================= SAVE ================= */
+
+        function saveCase() {
+
+            localStorage.setItem(
+                "lastCaseSaved",
+                new Date().toISOString()
+            );
+
+            alert(
+                "Clinical case saved successfully."
+            );
+
+        }
+
+
+        /* ================= NOTIFICATION ================= */
+
+        function showDoctorNotification() {
+
+            alert(
+                "You have 2 patient cases requiring review."
+            );
+
+        }
+
+
+        /* ================= LOGOUT ================= */
+
+        function doctorLogout() {
+
+            localStorage.removeItem(
+                "medinexDoctorId"
+            );
+
+            localStorage.removeItem(
+                "medinexDepartment"
+            );
+
+            localStorage.removeItem(
+                "medinexDoctorLoggedIn"
+            );
+
+            window.location.href =
+                "doctor-login.html";
+
+        }
+
+
+        /* ================= MOBILE MENU ================= */
+
+        const menuBtn =
+            document.getElementById("menuBtn");
+
+        const navbar =
+            document.querySelector(".navbar");
+
+        if (menuBtn && navbar) {
+
+            menuBtn.addEventListener(
+                "click",
+                function () {
+
+                    navbar.classList.toggle("active");
+
+                    menuBtn.textContent =
+                        navbar.classList.contains("active")
+                            ? "✕"
+                            : "☰";
+
+                }
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>
